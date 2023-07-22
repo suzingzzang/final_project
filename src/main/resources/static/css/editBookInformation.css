@@ -1,0 +1,38 @@
+#recommendedArea {
+	height: 200px;
+	border: 1px solid cornflowerblue;
+}
+
+#mainArea {
+	display: flex;
+	flex-grow: 1;
+}
+
+#categoriesMenu {
+	width: 20%;
+	border: 1px solid cadetblue;
+	margin-bottom: 20px;
+}
+
+#categoriesMenu div {
+	padding-left: 20px;
+}
+
+#bookList {
+	width: 80%;
+	border: 1px solid powderblue;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.page-item.active .page-link {
+	background-color: #5747E6;
+	border-color: #5747E6;
+}
+
+.page-link {
+	color: #5747E6;
+	float: none;
+	margin: 1px 7px;
+}

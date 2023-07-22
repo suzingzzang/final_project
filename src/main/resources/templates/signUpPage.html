@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Bootstrap Example</title>
+
+	<head th:replace="commonspace :: page_head('Home - Book Quest')" />
+	<link rel="stylesheet" th:href="@{/css/signUpPage.css}" />
+	<script type="text/javascript" th:src="@{/js/signUpPage.js}"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	
+</head>
+
+<body>
+	<div th:replace="commonspace :: menu"></div>
+
+	<div id="signup_box1">
+		<div th:if="${edit == null}" id="signup_box2">
+			<h1 style="font-size: 36px; font-weight: 600;">회원가입</h1>
+			<h2 style="font-size: 14px; color: #7D7D7D; font-weight: 400;">Book Quest에 오신 것을 환영합니다.
+				<img th:src="@{/images/party-popper.png}" style="width:15px; height:15px;">
+			</h2>
+		</div>
+		<div th:if="${edit != null}" id="signup_box2">
+			<h1 style="font-size: 36px; font-weight: 600;">회원정보 수정</h1>
+			<h2 style="font-size: 14px; color: #7D7D7D; font-weight: 400;">수정하실 정보를 입력해주세요.
+				<img th:src="@{/images/envelope.png}"
+					style="width:20px; height:20px; margin-left: 2px; margin-bottom: 3px;">
+			</h2>
+		</div>
+
+		<div id="signup_box3">
+			<form th:action="@{/sign/save}" th:object="${user}" method="POST">
+				<input type="hidden" th:field="*{userId}" />
+
+				<div id="signup_box3-1">
+					<div th:if="${edit == null}" class="noEdit">
+						<input type="text" id="email" name="email" placeholder="아이디" class="form-control" th:field="*{email}"
+							required /></p>
+						<button id="duplicateCheckButton"
+							onclick="event.stopPropagation(); checkEmailUniqueButton($('#userId').val(), $('#email').val());">아이디중복체크</button>
+					</div>
+
+					<div th:if="${edit != null}">
+						<p><input type="text" id="email_edit" name="email" placeholder="아이디" class="form-control"
+								th:field="*{email}" required /></p>
+					</div>
+
+					<div th:if="${check!=null}">
+						<input type="password" id="password" name="password" placeholder="비밀번호" class="form-control"
+							th:field="*{password}" minlength="6" maxlength="20" />
+					</div>
+
+					<div th:if="${check==null}">
+						<input type="password" id="password" name="password" placeholder="비밀번호" class="form-control"
+							th:field="*{password}" minlength="6" maxlength="20" required />
+					</div>
+					<div th:if="${check!=null}">
+						<input type="password" id="password_check" name="password2" placeholder="비밀번호 확인"
+							class="form-control" minlength="6" maxlength="20" onkeyup="checkPassword()" />
+						<span id="passwordError" style="color:red"></span>
+					</div>
+					<div th:if="${check==null}">
+						<input type="password" id="password_check" name="password2" placeholder="비밀번호 확인"
+							class="form-control" minlength="6" maxlength="20" onkeyup="checkPassword()" required />
+						<span id="passwordError" style="color:red "></span>
+					</div>
+
+					<p>
+						<input type="text" th:field="*{name}" class="form-control" id="name" placeholder="이름" required>
+					</p>
+					<p>
+						<input type="text" th:field="*{phone}" class="form-control" id="phone" placeholder="핸드폰 번호"
+							required>
+					</p>
+					<p>
+						<input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control" required>
+						<input type="button" id="address_button" onclick="sample6_execDaumPostcode()"
+							value="우편번호 찾기"><br>
+						<input type="text" th:field="*{address}" id="sample6_address" class="form-control"
+							placeholder="상세주소">
+						<input type="text" id="sample6_detailAddress" placeholder="상세주소 입력" class="form-control"
+							required>
+						<input type="text" id="sample6_extraAddress" placeholder="참고항목" class="form-control">
+					</p>
+				</div>
+
+				<div id="signup_box3-2">
+					<div th:if="${check!=null}">
+						<button type="submit" id="signup_button" value="Save">수정하기</button>
+					</div>
+					<div th:if="${check==null}">
+						<button type="submit" id="signup_button" value="Save">가입하기</button>
+					</div>
+					<div th:if="${userId}" id="resign">
+						<a th:href="@{|/user/delete/${user.userId}|}">회원탈퇴하기</a>
+					</div>
+				</div>
+			</form>
+
+
+		</div>
+	</div>
+
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Warning</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div th:replace="commonspace :: footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<link rel="stylesheet" th:href="@{/css/mypage.css}" />
+
+	<head th:replace="commonspace :: page_head('Home - Book Quest')" />
+</head>
+
+<body>
+	<div th:replace="commonspace :: menu" />
+
+	<div class="container">
+		<p>7. 개인 정보 수정 페이지, 탈퇴 구현하기<br>
+			페이먼트 등록 및 수정 기능 구현하기<br></p>
+
+		<h1 th:if="${user != null}"><span th:text="${user.name}"></span>님 , 안녕하세요!</h1>
+		<!--<p th:if="${user != null}">Your email address is <span th:text="${user.email}"></span>.</p>-->
+		<div id="background">
+			<div>
+				마이레벨<br><br>
+				4Lv
+			</div>
+			<div>
+				배송 중 <br><br>
+				0건
+			</div>
+			<div>
+				배송 완료<br><br>
+				3건
+			</div>
+			<div>
+				회원정보 변경<br><br>
+				<button type="button" class="btn btn-outline-success btn-sm">
+					<a th:href="@{|/user/update/${user.userId}|}">변경하기</a>
+				</button>
+			</div>
+			<div>
+				주문내역<br><br>
+				<button type="button" class="btn btn-outline-success btn-sm">
+					<a th:href="@{/order/}">확인하기</a>
+				</button>
+			</div>
+		</div>
+
+
+
+
+
+		<br><br><br>
+		<div>
+			<h1>등록된 나의계좌</h1>
+
+
+
+			<table border="1px">
+				<thead>
+					<tr>
+						<th>은행명</th>
+						<th>계좌번호</th>
+						<th>계좌번호 수정하기</th>
+						<th>계좌번호 삭제하기</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="payment : ${paymentList}">
+						<td th:text="${payment.bank}"></td>
+						<td th:text="${payment.accountNumber}"></td>
+						<td><a th:href="@{|/payment/update/${payment.paymentId}|}">계좌번호 수정하기</a></td>
+						<td><a th:href="@{|/payment/delete/${payment.paymentId}|}">계좌번호 삭제하기</a></td>
+
+					</tr>
+				</tbody>
+			</table>
+			<a th:href="@{/payment/paymentadd}">계좌번호 등록하기</a>
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

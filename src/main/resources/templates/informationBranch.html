@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+
+	<head th:replace="commonspace :: page_head('Home - Information Branch')" />
+	<script type="text/javascript" th:src="@{/js/informationBranch.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/informationBranch.css}" />
+	<link rel="stylesheet" th:href="@{/css/book.css}" />
+	<link rel="stylesheet" th:href="@{/css/home.css}" />
+	
+</head>
+
+<body>
+	<div th:replace="commonspace :: menu" />
+
+	<div id="container">
+		<div id="topContainer">
+			<div id="left">
+				<h3>[[${branchInformation.branchName}]] 도서찾기</h3><br>
+				매장 주소 | [[${branchInformation.branchAddress}]]<br>
+				영업 시간 | 09:30~22:00<br>
+				휴점 | 설(당일),추석(당일)<br>
+				<div id="map"></div>
+			</div>
+
+			<div id="right">
+				<img id = "branchImage" th:src="@{/images/bookstore1.png}">
+			</div>
+
+			<input type="hidden" id="lat" th:value="${branchInformation.latitude}" />
+			<input type="hidden" id="lng" th:value="${branchInformation.longitude}" />
+
+			<script>
+				var lat = $("#lat").val();
+				var lng = $("#lng").val();
+				initMap(lat, lng)
+			</script>
+		</div>
+
+		<div style="display: flex">
+			<div id="category">
+				<div th:if="${listCategories != null}" id="categoriesMenu">
+					<div th:each="cat : ${listCategories}">
+						<a th:href="@{/book(category=${cat.categoryId})}" style="font-size: 0.8rem;">
+							<div th:text = "${cat.name}"/>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="wrapper"	>
+				<div id="tabArea1">
+					<div id="tabArea2">
+						<div style="font-size: 36px; font-weight: 500;">[[${msg}]]</div>
+						<div style="font-size: 14px; display: flex; align-items: center; color: #7D7D7D;">
+							[[${message}]] <img th:src="@{/images/fire.png}" style="width: 15px; height: 12px; margin-left: 2px;">
+						</div>
+					</div>
+
+					<div id="tab">
+						<div>
+							<div style="width: 120px; height: 100%; float: left; padding-left: 23px; font-weight: 500;">
+								<a th:href="@{/book/sortPrice}">가격순</a>
+							</div>
+							<div style="width: 120px; height: 100%; float: left; padding-left: 23px; font-weight: 500;">
+								<a th:href="@{/book/sortTitle}">제목순</a>
+							</div>
+							<div style="width: 120px; height: 100%; float: left; padding-left: 23px; font-weight: 500;">
+								<form th:action="@{/book}" style="text-align:center;">
+									<div style="position: relative; display: inline-block;">
+										<input id="search" type="search" name="keyword" th:value="${keyword}"
+											placeholder="도서명 검색하기">
+										<button type="submit" id="search_button"></button>
+										<img th:src="@{/images/search_icon.png}"
+											style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); margin-right:12px;">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="book_box">
+					<div th:each="book : ${books}">
+						<div id="booklist">
+							<div class="book">
+								<div id="image_box">
+									<a th:href="@{/book/detail(book=${book.bookId})}">
+										<img th:src="@{${book.imagePath}}" title="${book.image}" />
+									</a>
+								</div>
+
+								<div id="book_info">
+									<div id="book_info2">
+										<div th:text="${book.title}"
+											style="font-size: 24px; font-weight: 600; margin-bottom: 16px; height: 30px;">
+										</div>
+
+										<div style="display:flex; align-items:center; margin-bottom: 5px;">
+											<div th:if="${book.avgStar == 0}">
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+											</div>
+											<div th:if="${book.avgStar >= 1 and book.avgStar <2}">
+												<span class="star">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+											</div>
+											<div th:if="${book.avgStar >=2 and book.avgStar < 3}">
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+											</div>
+											<div th:if="${book.avgStar >=3 and book.avgStar < 4}">
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+											</div>
+											<div th:if="${book.avgStar >=4 and book.avgStar < 5}">
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="unstar">&#x2605;</span>
+											</div>
+											<div th:if="${book.avgStar ==5}">
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+												<span class="star">&#x2605;</span>
+											</div>
+
+											<div th:text="${book.avgStar}"
+												style="width:111px; height:16px; margin-left: 7px; font-size:12px;">
+												([[${book.avgStar}]])
+
+											</div>
+										</div>
+										<div
+											style="width: 236px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+											<div th:text="${book.author}" style="font-size: 14px;"></div>
+											<div style="font-size: 14px;">|</div>
+											<div th:text="${book.publisher}" style="font-size: 14px;"></div>
+											<div style="font-size: 14px;">|</div>
+											<div th:text="${book.publicationDate}" style="font-size: 14px;"></div>
+										</div>
+
+										<div style="height: 68px;">
+											<div style="display: flex; align-items: center;">
+												<div style="margin-right: 10px; font-size: 14px; color: #7D7D7D">최상품 
+													판매가</div>
+												<div style="color: #5747E6; font-size: 20px; font-weight: 700;"
+													th:text="${#numbers.formatDecimal(book.price*0.5, 0, 'COMMA', 0, 'POINT') + '원'}">
+												</div>
+											</div>
+
+											<div style="display: flex; align-items: center;">
+												<div style="margin-right: 10px; font-size: 14px; color: #7D7D7D">상품
+													판매가</div>
+												<div style="color: #5747E6; font-size: 20px; font-weight: 700;"
+													th:text="${#numbers.formatDecimal(book.price*0.4, 0, 'COMMA', 0, 'POINT') + '원'}">
+												</div>
+												<th:block th:each="bookbranch : ${bookbranch}">
+													<div th:if="${bookbranch!=null}"
+														th:text="재고수량+${bookbranch.quantity}+권"></div>
+													<div th:text="${bookbranch.branches.branchName}"></div>
+												</th:block>
+											</div>
+										</div>
+									</div>
+									<div th:text="${book.description}" id="book_description"></div>
+								</div>
+							</div>
+							<div id="button_box">
+								<form th:action="@{/cart/save}" th:object="${cart}" method="POST">
+									<input type="hidden" th:value="1" name="number" /> <input type="hidden"
+										th:value="${book.bookId}" name="book" />
+									<button type="submit" style="margin-bottom: 10px;" id="cart">장바구니</button>
+								</form>
+
+								<form th:action="@{|/order/buyselect|}" method="POST">
+									<input type="hidden" name="book" th:value="${book.bookId}" /> <input type="hidden"
+										name="bookquantity" th:value="1" />
+									<button type="submit" id="buy">구매하기</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="commonspace :: footer" />
+</body>
+
+</html>

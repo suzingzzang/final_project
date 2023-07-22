@@ -1,0 +1,34 @@
+#container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#topContainer {
+	width: 1200px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#left {
+	width: 45%;
+}
+
+#right {
+	width: 55%;
+}
+
+#map {
+	width: 500px;
+	height: 300px;
+}
+
+#branchImage {
+	max-width: 100%;
+	height: auto;
+	position: absolute;
+	bottom: 0px;
+}
